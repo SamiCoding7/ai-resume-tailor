@@ -2,21 +2,70 @@
 <html>
 <head>
     <title>AI Resume Tailor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #333;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
     <h1>AI Resume Tailor</h1>
     <p>Upload your resume and paste a job description to get AI-powered feedback.</p>
     
     <form action="/analyze" method="POST" enctype="multipart/form-data">
+        <label>Upload Resume (.txt or .pdf):</label>
+        <input type="file" name="resume"><br>
         
-        <label>Upload Resume (.txt or .pdf):</label><br>
-        <input type="file" name="resume"><br><br>
-        
-        <label>Paste Job Description:</label><br>
-        <textarea name="job_description" rows="10" cols="60"></textarea><br><br>
+        <label>Paste Job Description:</label>
+        <textarea name="job_description" rows="10"></textarea>
         
         <input type="submit" value="Analyze Resume">
-        
     </form>
 </body>
 </html>

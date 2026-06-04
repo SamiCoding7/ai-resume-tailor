@@ -1,7 +1,9 @@
 from flask import Flask, request, render_template
+from markupsafe import Markup
 import google.generativeai as genai
 import PyPDF2
 import os
+import markdown
 from dotenv import load_dotenv
 
 # Setup
@@ -34,7 +36,6 @@ def analyze():
     resume_file = request.files.get("resume")
     filename = resume_file.filename
 
-    # Read the resume
     if filename.endswith(".txt"):
         resumeText = resume_file.read().decode("utf-8")
     elif filename.endswith(".pdf"):
@@ -45,12 +46,11 @@ def analyze():
     else:
         return "Please upload a .txt or .pdf file"
 
-    # Send to Gemini
     chat = model.start_chat()
-    response = chat.send_message(f"Give feedback on this resume: {resumeText} where this is the job description: {job_description}. Give it in four sections: 1. A match score as a %, 2. Rewritten bullet points tailored to the job, 3. Skill gaps - what the job wants that the resume is missing, 4. Keywords to add - terms from the job description not in the resume")
+    response = chat.send_message(f"Analyze this resume against the job description. Return exactly 4 sections: 1. Match score (%), 2. Rewritten bullet points tailored to the role, 3. Skill gaps, 4. Keywords to add. Resume: {resumeText} Job: {job_description}")
     
-    feedback = response.text
-    return render_template("results.html", feedback=feedback)
+    feedback_html = Markup(markdown.markdown(response.text))
+    return render_template("results.html", feedback=feedback_html)
 
 if __name__ == "__main__":
     app.run(debug=True)
